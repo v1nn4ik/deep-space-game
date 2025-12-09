@@ -71,7 +71,7 @@ namespace Shooter.Gameplay
         }
 
         // Update is called once per frame
-        void Update()
+        protected virtual void Update()
         {
 
             FireDelayTimer -= Time.deltaTime;

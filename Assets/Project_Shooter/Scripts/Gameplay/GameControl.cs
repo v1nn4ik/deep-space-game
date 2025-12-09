@@ -29,11 +29,9 @@ namespace Shooter.Gameplay
         void Awake()
         {
             m_Current = this;
-            // Загружаем данные сохранения при старте сцены
             if (m_MainSaveData != null)
             {
                 m_MainSaveData.Load();
-                Debug.Log($"GameControl: Loaded checkpoint {m_MainSaveData.m_CheckpointNumber}, coins: {m_MainSaveData.m_CashAmount}");
             }
         }
         // Start is called before the first frame update
@@ -49,7 +47,7 @@ namespace Shooter.Gameplay
             {
                 m_TextUI_1.SetActive(true);
                 FadeControl.m_Current.StartFadeIn();
-                yield return new WaitForSeconds(4f);
+                yield return new WaitForSeconds(1f);
                 FadeControl.m_Current.StartFadeOut();
                 yield return new WaitForSeconds(3f);
                 m_TextUI_1.SetActive(false);
@@ -72,10 +70,8 @@ namespace Shooter.Gameplay
             }
         }
 
-        // Update is called once per frame
         void Update()
         {
-            // Проверяем, не открыт ли магазин
             if (Shooter.UI.ShopMenu.m_Main != null && Shooter.UI.ShopMenu.m_Main.m_IsShopOpen)
             {
                 m_IsShopOpen = true;
@@ -87,7 +83,6 @@ namespace Shooter.Gameplay
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                // Не открываем паузу, если открыт магазин
                 if (m_IsShopOpen)
                     return;
 
@@ -118,7 +113,6 @@ namespace Shooter.Gameplay
             if (num > m_MainSaveData.m_CheckpointNumber)
             {
                 m_MainSaveData.m_CheckpointNumber = num;
-                // Сохраняем количество гемов (монет) при прохождении чекпоинта
                 if (PlayerControl.MainPlayerController != null)
                 {
                     m_MainSaveData.m_GemCount = PlayerControl.MainPlayerController.m_GemCount;
@@ -130,8 +124,6 @@ namespace Shooter.Gameplay
 
         public void HandlePlayerDeath()
         {
-            // Не сохраняем текущие монеты - при смерти откатываемся к последнему чекпоинту
-            // Монеты загрузятся из сохранения при старте сцены
             StartCoroutine(Co_HandleGameOver());
         }
 
@@ -161,7 +153,6 @@ namespace Shooter.Gameplay
 
         public void Restart()
         {
-            // Пустой метод - функционал рестарта удален, кнопка оставлена
         }
     }
 }

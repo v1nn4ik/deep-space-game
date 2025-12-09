@@ -122,7 +122,6 @@ namespace Shooter.Gameplay
             InputEnable = true;
             //Cursor.lockState = CursorLockMode.Locked;
 
-            // Загружаем сохраненное количество гемов (монет) с последнего чекпоинта
             if (GameControl.m_Current != null && GameControl.m_Current.m_MainSaveData != null)
             {
                 m_GemCount = GameControl.m_Current.m_MainSaveData.m_GemCount;

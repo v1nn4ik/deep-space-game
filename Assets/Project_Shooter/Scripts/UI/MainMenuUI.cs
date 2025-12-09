@@ -16,22 +16,18 @@ namespace Shooter
 
         public void BtnStart()
         {
-            // Сбрасываем прогресс перед запуском игры, чтобы начать с начала
             if (m_SaveData != null)
             {
                 m_SaveData.ResetProgress();
-                Debug.Log("Прогресс сброшен. Игра начнется с начала.");
             }
             SceneManager.LoadScene("Level_1");
         }
 
         public void BtnResetProgress()
         {
-            // Отдельный метод для сброса прогресса (можно использовать из кнопки в меню)
             if (m_SaveData != null)
             {
                 m_SaveData.ResetProgress();
-                Debug.Log("Прогресс сброшен.");
             }
         }
     }

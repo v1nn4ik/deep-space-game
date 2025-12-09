@@ -12,6 +12,7 @@ namespace Shooter.UI
         public Text[] m_PlayerTexts_1;
         public Text m_GemCountText;
         public Text m_GunNameText;
+        public Image m_WeaponIconImage; // Иконка текущего оружия
         public Image m_AimTargetImage;
         public RectTransform m_MainCanvas;
 
@@ -28,7 +29,8 @@ namespace Shooter.UI
         public Text m_PowerNameText;
         public Text m_PowerAmountText;
 
-        public string[] m_WeaponNames = new string[4] { "ПИСТОЛЕТ", "ДРОБОВИК", "MACHINGUN", "PLASMA GUN" };
+        public string[] m_WeaponNames = new string[4] { "ПИСТОЛЕТ", "ДРОБОВИК", "ПУЛЕМЕТ", "РПГ" };
+        public Sprite[] m_WeaponIcons = new Sprite[4]; // Массив иконок оружий
 
         public static UI_HUD m_Main;
 
@@ -43,10 +45,8 @@ namespace Shooter.UI
             m_BossHealthBase.gameObject.SetActive(false);
         }
 
-        // Update is called once per frame
         void Update()
         {
-            // Проверяем, что все необходимые объекты инициализированы
             if (PlayerControl.MainPlayerController != null && m_GemCountText != null)
             {
                 m_GemCountText.text = PlayerControl.MainPlayerController.m_GemCount.ToString();
@@ -92,6 +92,21 @@ namespace Shooter.UI
             if (m_GunNameText != null && PlayerChar.m_Current.m_WeaponNum < m_WeaponNames.Length)
             {
                 m_GunNameText.text = m_WeaponNames[PlayerChar.m_Current.m_WeaponNum];
+            }
+
+            // Обновляем иконку оружия
+            if (m_WeaponIconImage != null && m_WeaponIcons != null && 
+                PlayerChar.m_Current.m_WeaponNum >= 0 && PlayerChar.m_Current.m_WeaponNum < m_WeaponIcons.Length)
+            {
+                if (m_WeaponIcons[PlayerChar.m_Current.m_WeaponNum] != null)
+                {
+                    m_WeaponIconImage.sprite = m_WeaponIcons[PlayerChar.m_Current.m_WeaponNum];
+                    m_WeaponIconImage.enabled = true;
+                }
+                else
+                {
+                    m_WeaponIconImage.enabled = false;
+                }
             }
 
             if (GameControl.m_Current != null && GameControl.m_Current.m_LevelBoss != null)
@@ -152,6 +167,27 @@ namespace Shooter.UI
         public void HideBossHealth()
         {
             m_BossHealthBase.gameObject.SetActive(false);
+        }
+
+        public void UpdateWeaponIcon()
+        {
+            if (PlayerChar.m_Current == null)
+                return;
+
+            // Обновляем иконку оружия
+            if (m_WeaponIconImage != null && m_WeaponIcons != null && 
+                PlayerChar.m_Current.m_WeaponNum >= 0 && PlayerChar.m_Current.m_WeaponNum < m_WeaponIcons.Length)
+            {
+                if (m_WeaponIcons[PlayerChar.m_Current.m_WeaponNum] != null)
+                {
+                    m_WeaponIconImage.sprite = m_WeaponIcons[PlayerChar.m_Current.m_WeaponNum];
+                    m_WeaponIconImage.enabled = true;
+                }
+                else
+                {
+                    m_WeaponIconImage.enabled = false;
+                }
+            }
         }
 
     }

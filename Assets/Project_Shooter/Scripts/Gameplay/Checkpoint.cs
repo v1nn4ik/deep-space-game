@@ -13,13 +13,11 @@ namespace Shooter.Gameplay
         public GameObject[] m_Bases;
 
         public GameObject m_ActivateParticle;
-        // Start is called before the first frame update
         void Start()
         {
 
         }
 
-        // Update is called once per frame
         void Update()
         {
             if (!m_IsActivated)
@@ -44,7 +42,6 @@ namespace Shooter.Gameplay
                 obj.transform.position = transform.position + new Vector3(0, .3f, 0);
                 Destroy(obj, 3);
 
-                // Открываем магазин при активации чекпоинта
                 OpenShopMenu();
             }
         }
@@ -53,17 +50,11 @@ namespace Shooter.Gameplay
         {
             Shooter.UI.ShopMenu shopMenu = Shooter.UI.ShopMenu.m_Main;
             
-            // Если ShopMenu не найден статически, пытаемся найти его в сцене
             if (shopMenu == null)
             {
                 shopMenu = FindObjectOfType<Shooter.UI.ShopMenu>();
-                if (shopMenu != null)
-                {
-                    Debug.Log("Checkpoint: ShopMenu найден через FindObjectOfType");
-                }
             }
 
-            // Если все еще не найден, создаем его автоматически на объекте GameUI
             if (shopMenu == null)
             {
                 GameObject gameUI = GameObject.Find("GameUI");
@@ -73,12 +64,10 @@ namespace Shooter.Gameplay
                     if (shopMenu == null)
                     {
                         shopMenu = gameUI.AddComponent<Shooter.UI.ShopMenu>();
-                        Debug.Log("Checkpoint: ShopMenu автоматически добавлен на GameUI. НЕОБХОДИМО настроить UI элементы в Inspector!");
                     }
                 }
                 else
                 {
-                    Debug.LogError("Checkpoint: GameUI не найден в сцене! Создайте GameObject с компонентом ShopMenu вручную.");
                     return;
                 }
             }
@@ -86,10 +75,6 @@ namespace Shooter.Gameplay
             if (shopMenu != null)
             {
                 shopMenu.OpenShop();
-            }
-            else
-            {
-                Debug.LogError("Checkpoint: Не удалось создать или найти ShopMenu!");
             }
         }
     }

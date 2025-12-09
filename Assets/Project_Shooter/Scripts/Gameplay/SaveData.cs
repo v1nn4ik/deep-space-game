@@ -21,6 +21,7 @@ namespace Shooter.ScriptableObjects
         public int m_WeaponPowerLevel = 0; // Уровень улучшения оружия
         public int m_HealthBuffLevel = 0; // Уровень баффа здоровья (0-4)
         public int m_DamageBuffLevel = 0; // Уровень баффа урона (0-4)
+        public int m_CurrentWeaponNum = 0; // Текущее выбранное оружие
 
         public void Save()
         {
@@ -34,6 +35,7 @@ namespace Shooter.ScriptableObjects
             PlayerPrefs.SetInt("m_WeaponPowerLevel", m_WeaponPowerLevel);
             PlayerPrefs.SetInt("m_HealthBuffLevel", m_HealthBuffLevel);
             PlayerPrefs.SetInt("m_DamageBuffLevel", m_DamageBuffLevel);
+            PlayerPrefs.SetInt("m_CurrentWeaponNum", m_CurrentWeaponNum);
             PlayerPrefs.Save();
 
             // Сохранение m_GemCount в облачное хранилище через PluginYG
@@ -56,6 +58,7 @@ namespace Shooter.ScriptableObjects
             m_WeaponPowerLevel = PlayerPrefs.GetInt("m_WeaponPowerLevel", 0);
             m_HealthBuffLevel = PlayerPrefs.GetInt("m_HealthBuffLevel", 0);
             m_DamageBuffLevel = PlayerPrefs.GetInt("m_DamageBuffLevel", 0);
+            m_CurrentWeaponNum = PlayerPrefs.GetInt("m_CurrentWeaponNum", 0);
         }
 
         public void ResetProgress()
@@ -72,8 +75,8 @@ namespace Shooter.ScriptableObjects
             m_WeaponPowerLevel = 0;
             m_HealthBuffLevel = 0;
             m_DamageBuffLevel = 0;
+            m_CurrentWeaponNum = 0;
 
-            // Удаляем ключи из PlayerPrefs
             PlayerPrefs.DeleteKey("m_CheckpointNumber");
             PlayerPrefs.DeleteKey("m_GemCount");
             PlayerPrefs.DeleteKey("m_CashAmount");
@@ -84,6 +87,7 @@ namespace Shooter.ScriptableObjects
             PlayerPrefs.DeleteKey("m_WeaponPowerLevel");
             PlayerPrefs.DeleteKey("m_HealthBuffLevel");
             PlayerPrefs.DeleteKey("m_DamageBuffLevel");
+            PlayerPrefs.DeleteKey("m_CurrentWeaponNum");
             PlayerPrefs.Save();
 
             // Сбрасываем данные в YandexGame

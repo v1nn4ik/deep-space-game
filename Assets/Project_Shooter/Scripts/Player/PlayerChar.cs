@@ -94,7 +94,6 @@ namespace Shooter.Gameplay
             m_WeaponPowerParticle.SetActive(false);
             //Cursor.lockState = CursorLockMode.Locked;
 
-            // Загружаем купленные оружия и улучшения из сохранения
             LoadPurchasedItems();
         }
 
@@ -104,7 +103,6 @@ namespace Shooter.Gameplay
             {
                 SaveData saveData = GameControl.m_Current.m_MainSaveData;
 
-                // Применяем купленные оружия
                 if (m_Weapons != null)
                 {
                     if (saveData.m_HasPistol && m_Weapons.Length > 0 && m_Weapons[0] != null)
@@ -128,25 +126,22 @@ namespace Shooter.Gameplay
                     }
                 }
 
-                // Применяем улучшение оружия
                 if (saveData.m_WeaponPowerLevel >= 1)
                 {
                     SetWeaponPowerLevel(1);
                 }
 
-                // Применяем бафф здоровья (каждый уровень дает +25% здоровья)
                 if (saveData.m_HealthBuffLevel > 0 && m_DamageControl != null)
                 {
                     float currentHealthPercent = m_DamageControl.Damage / m_DamageControl.MaxDamage;
-                    float healthMultiplier = 1.0f + (saveData.m_HealthBuffLevel * 0.25f); // +25% за уровень
+                    float healthMultiplier = 1.0f + (saveData.m_HealthBuffLevel * 0.25f);
                     m_DamageControl.MaxDamage *= healthMultiplier;
                     m_DamageControl.Damage = m_DamageControl.MaxDamage * currentHealthPercent;
                 }
 
-                // Применяем бафф урона (каждый уровень дает +25% урона)
                 if (saveData.m_DamageBuffLevel > 0 && m_Weapons != null)
                 {
-                    float damageMultiplier = 1.0f + (saveData.m_DamageBuffLevel * 0.25f); // +25% за уровень
+                    float damageMultiplier = 1.0f + (saveData.m_DamageBuffLevel * 0.25f);
                     foreach (Weapon_Base weapon in m_Weapons)
                     {
                         if (weapon != null)
@@ -155,16 +150,38 @@ namespace Shooter.Gameplay
                         }
                     }
                 }
+                if (saveData.m_CurrentWeaponNum >= 0 && saveData.m_CurrentWeaponNum < m_Weapons.Length)
+                {
+                    bool weaponAvailable = false;
+                    switch (saveData.m_CurrentWeaponNum)
+                    {
+                        case 0:
+                            weaponAvailable = saveData.m_HasPistol;
+                            break;
+                        case 1:
+                            weaponAvailable = saveData.m_HasShotgun;
+                            break;
+                        case 2:
+                            weaponAvailable = saveData.m_HasMachinegun;
+                            break;
+                        case 3:
+                            weaponAvailable = saveData.m_HasRPG;
+                            break;
+                    }
+
+                    if (weaponAvailable && m_Weapons[saveData.m_CurrentWeaponNum] != null && m_Weapons[saveData.m_CurrentWeaponNum].WeaponEnable)
+                    {
+                        SetWeapon(saveData.m_CurrentWeaponNum);
+                    }
+                }
             }
         }
 
-        // Update is called once per frame
         void Update()
         {
             m_Input_Fire = false;
             m_Input_Fire2 = false;
             m_Input_LockAim = false;
-            //input
             if (m_InControl)
             {
                 m_Input_Fire = PlayerControl.MainPlayerController.Input_FireHold;
@@ -217,10 +234,6 @@ namespace Shooter.Gameplay
                 //    StartDash();
                 //}
 
-                Vector3 axis = Vector3.Cross(Vector3.up, m_MovementInput);
-                Quaternion newRotation = Quaternion.AngleAxis(20, axis);
-
-                // aim directly at cursor position projected into the world
                 Vector3 aimDir = PlayerControl.MainPlayerController.AimPosition - m_FirePoint.position;
                 aimDir.y = 0;
                 if (aimDir.sqrMagnitude > 0.0001f)
@@ -264,7 +277,10 @@ namespace Shooter.Gameplay
                 }
                 //}
 
-                m_Weapons[m_WeaponNum].Input_FireHold = m_Input_Fire;
+                if (m_Weapons[m_WeaponNum] != null)
+                {
+                    m_Weapons[m_WeaponNum].Input_FireHold = m_Input_Fire;
+                }
 
                 //m_Weapon2.Input_FireHold = m_Input_Fire2;
             }
@@ -279,22 +295,18 @@ namespace Shooter.Gameplay
                 }
             }
 
-            //animation parameters
             Vector3 vSpeed = GetComponent<Rigidbody>().linearVelocity;
             vSpeed.y = 0;
             float runSpeed = Mathf.Clamp(vSpeed.magnitude / 10f, 0, 1);
             m_Animator.SetFloat("RunSpeed", runSpeed);
 
-            //shield
             m_ShieldObject.transform.position = transform.position + new Vector3(0, 1, 0);
 
-            if (!m_IsDead)
-            {
-                if (m_DamageControl.Damage <= 0)
+                if (!m_IsDead)
                 {
-                    // При смерти монеты откатываются к последнему чекпоинту
-                    //die
-                    m_IsDead = true;
+                    if (m_DamageControl.Damage <= 0)
+                    {
+                        m_IsDead = true;
                     GameObject obj = Instantiate(m_DeathParticle);
                     obj.transform.position = transform.position + new Vector3(0, 1, 0);
                     //obj.transform.forward = m_DashDirection;
@@ -396,11 +408,23 @@ namespace Shooter.Gameplay
 
         public void SetWeapon(int num)
         {
+            if (m_Weapons == null || num < 0 || num >= m_Weapons.Length || m_Weapons[num] == null)
+                return;
+            
             foreach (Weapon_Base w in m_Weapons)
             {
-                w.Input_FireHold = false;
+                if (w != null)
+                {
+                    w.Input_FireHold = false;
+                }
             }
             m_WeaponNum = num;
+            
+            if (GameControl.m_Current != null && GameControl.m_Current.m_MainSaveData != null)
+            {
+                GameControl.m_Current.m_MainSaveData.m_CurrentWeaponNum = num;
+                GameControl.m_Current.m_MainSaveData.Save();
+            }
         }
 
         public void ThrowGrenade()

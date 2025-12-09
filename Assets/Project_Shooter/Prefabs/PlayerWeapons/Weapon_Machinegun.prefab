@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1855551136656379325}
   - component: {fileID: 4288834026685758845}
   m_Layer: 0
-  m_Name: Weapon_Shotgun
+  m_Name: Weapon_Machinegun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5045183378357114265}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b530a539294ba54094f30fdb64074db, type: 3}
+  m_Script: {fileID: 11500000, guid: 06998257025a93d40b98197ef88ad6e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   WpnID: 0
@@ -55,12 +55,12 @@ MonoBehaviour:
   MaxAmmo: 80
   AddAmmo: 10
   PowerWeaponMaxAmmo: 80
-  WeaponIcon: {fileID: 21300000, guid: 88edec29c8555bf4483ca8f2f66cbd9d, type: 3}
-  Damage: 0.8
+  WeaponIcon: {fileID: 0}
+  Damage: 1
   ProjectileSpeed: 100
-  Range: 30
+  Range: 40
   InfiniteAmmo: 1
-  WeaponModelPrefab: {fileID: 0}
+  WeaponModelPrefab: {fileID: 5045183378357114265}
   BulletPrefab: {fileID: 4015073885441229448, guid: fef378896ceeb664dbf61664fbf56af3,
     type: 3}
   EffectPrefab: {fileID: 5599717751194728857, guid: 826851dab3cbbe04f8867249ed764ea8,
@@ -69,7 +69,7 @@ MonoBehaviour:
   AmmoCount: 50
   m_FirePoint: {fileID: 0}
   m_ParticlePoint: {fileID: 0}
-  m_Owner: {fileID: 0}
+  m_Owner: {fileID: 9180820861068994198, guid: d84b666626dafd54f86643553147b067, type: 3}
   Owner: {fileID: 0}
   FireDelayTimer: 0
   BurstDelayTimer: 0
@@ -78,4 +78,4 @@ MonoBehaviour:
   Input_FireHold: 0
   Forward: {x: 0, y: 0, z: 0}
   m_PowerLevel: 0
-  m_WeaponColor: {r: 1, g: 0.2, b: 0.2, a: 1}
+  m_WeaponColor: {r: 0.2, g: 1, b: 0.3, a: 1}

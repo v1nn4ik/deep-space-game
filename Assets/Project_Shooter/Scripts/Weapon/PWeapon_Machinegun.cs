@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Shooter.Gameplay
 {
-    public class PWeapon_Shotgun : Weapon_Base
+    public class PWeapon_Machinegun : Weapon_Base
     {
         [Header("Цветовая заливка")]
-        public Color m_WeaponColor = new Color(1f, 0.2f, 0.2f, 1f); // Красный цвет
+        public Color m_WeaponColor = new Color(0.2f, 1f, 0.3f, 1f); // Зеленый цвет
 
         private Renderer[] m_Renderers;
 
-        // Start is called before the first frame update
         void Start()
         {
-            // Находим все Renderer компоненты в дочерних объектах
             m_Renderers = GetComponentsInChildren<Renderer>();
             ApplyColor();
         }
@@ -32,18 +30,19 @@ namespace Shooter.Gameplay
             }
         }
 
-        // Update is called once per frame
-        void Update()
+        protected override void Update()
         {
+            if (!WeaponEnable)
+                return;
+            
             if (m_PowerLevel == 0)
             {
-                FireDelay = .3f;
+                FireDelay = .1f;
             }
             else if (m_PowerLevel == 1)
             {
-                FireDelay = .25f;
+                FireDelay = .08f;
             }
-
 
             FireDelayTimer -= Time.deltaTime;
             if (FireDelayTimer <= 0)
@@ -57,45 +56,42 @@ namespace Shooter.Gameplay
             {
                 if (FireDelayTimer == 0)
                 {
-
                     FireWeapon();
                     FireDelayTimer = FireDelay;
                     RecoilTimer = 1f;
                 }
-
             }
-
-            //Input_FireHold = false;
         }
 
         public override void FireWeapon()
         {
-
+            if (BulletPrefab == null || m_FirePoint == null)
+                return;
+            
             GameObject obj;
 
             if (m_PowerLevel == 0)
             {
-                for (int i = 0; i < 3; i++)
+                obj = Instantiate(BulletPrefab);
+                obj.transform.position = m_FirePoint.position;
+                obj.transform.forward = m_FirePoint.forward;
+                Projectile_Base proj = obj.GetComponent<Projectile_Base>();
+                if (proj != null)
                 {
-                    obj = Instantiate(BulletPrefab);
-                    obj.transform.position = m_FirePoint.position;
-                    obj.transform.forward = Quaternion.Euler(0,-6+ i * 6, 0) * m_FirePoint.forward;
-                    Projectile_Base proj = obj.GetComponent<Projectile_Base>();
                     proj.Creator = m_Owner;
                     proj.Speed = ProjectileSpeed;
                     proj.Damage = Damage;
                     proj.m_Range = Range;
-                    Destroy(obj, 5);
                 }
-
+                Destroy(obj, 5);
             }
             else if (m_PowerLevel == 1)
             {
-                for (int i = 0; i < 6; i++)
+                for (int i = -1; i < 2; i++)
                 {
                     obj = Instantiate(BulletPrefab);
                     obj.transform.position = m_FirePoint.position;
-                    obj.transform.forward = Quaternion.Euler(0, -30+i * 10, 0) * m_FirePoint.forward;
+                    obj.transform.forward = Quaternion.Euler(0, i * 10, 0) * m_FirePoint.forward;
                     Projectile_Base proj = obj.GetComponent<Projectile_Base>();
                     proj.Creator = m_Owner;
                     proj.Speed = ProjectileSpeed;
