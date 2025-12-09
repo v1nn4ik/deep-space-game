@@ -181,6 +181,11 @@ namespace Shooter.Gameplay
         void Update()
         {
             UpdateInputs();
+            
+            if (!m_IsDead && Input_Dash && MyPlayerChar != null)
+            {
+                MyPlayerChar.StartDash();
+            }
 
             //if (Input_Fly)
             //{
@@ -304,10 +309,10 @@ namespace Shooter.Gameplay
             //{
             //    Input_Grenade = true;
             //}
-            //if (Input.GetKeyDown(KeyCode.R))
-            //{
-            //    Input_Dash = true;
-            //}
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                Input_Dash = true;
+            }
             //if (Input.GetKeyDown(KeyCode.T))
             //{
             //    Input_Force = true;
