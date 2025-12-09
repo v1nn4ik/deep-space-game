@@ -220,46 +220,18 @@ namespace Shooter.Gameplay
                 Vector3 axis = Vector3.Cross(Vector3.up, m_MovementInput);
                 Quaternion newRotation = Quaternion.AngleAxis(20, axis);
 
-                //find target
-                List<TargetObject> targets = TargetsControl.m_Main.m_Targets;
-
-                TargetObject bestTarget = null;
-                float minAngle = 40;
-                foreach (TargetObject target in targets)
+                // aim directly at cursor position projected into the world
+                Vector3 aimDir = PlayerControl.MainPlayerController.AimPosition - m_FirePoint.position;
+                aimDir.y = 0;
+                if (aimDir.sqrMagnitude > 0.0001f)
                 {
-                    if (target == null)
-                        continue;
-
-                    Vector3 targetPos = target.m_TargetCenter.position;
-                    Vector3 dir = targetPos - transform.position;
-                    dir.y = 0;
-                    float delta = Vector3.Angle(m_TurnBase.forward, dir);
-                    float distance = dir.magnitude;
-
-                    if (distance > 30)
-                        continue;
-
-                    if (delta < minAngle)
-                    {
-                        bestTarget = target;
-                        minAngle = delta;
-                    }
-                }
-
-                if (bestTarget != null)
-                {
-                    Vector3 targetPos = bestTarget.m_TargetCenter.position;
-                    Vector3 targetDir = targetPos - m_FirePoint.position;
-                    targetDir.y = 0;
-                    //m_AimBase.forward = targetDir;
-                    m_AimBase.rotation = Quaternion.Lerp(m_AimBase.rotation, Quaternion.LookRotation(targetDir), 20 * Time.deltaTime);
-                    m_TempTarget = bestTarget;
+                    m_AimBase.rotation = Quaternion.Lerp(m_AimBase.rotation, Quaternion.LookRotation(aimDir), 20 * Time.deltaTime);
                 }
                 else
                 {
-                    m_TempTarget = null;
                     m_AimBase.localRotation = Quaternion.Lerp(m_AimBase.localRotation, Quaternion.identity, 20 * Time.deltaTime);
                 }
+                m_TempTarget = null;
 
                 //Vector3 dir = PlayerControl.MainPlayerController.AimPosition - transform.position;
                 //dir.y = 0;

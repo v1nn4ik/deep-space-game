@@ -262,20 +262,20 @@ namespace Shooter.Gameplay
             cameraForward.Normalize();
             Vector3 cameraRight = Helper.RotatedVector(90, cameraForward);
 
-            if (Input.GetKey(KeyCode.UpArrow))
+            if (Input.GetKey(KeyCode.W))
             {
                 m_Input_Movement += cameraForward;
             }
-            else if (Input.GetKey(KeyCode.DownArrow))
+            else if (Input.GetKey(KeyCode.S))
             {
                 m_Input_Movement -= cameraForward;
             }
 
-            if (Input.GetKey(KeyCode.LeftArrow))
+            if (Input.GetKey(KeyCode.A))
             {
                 m_Input_Movement -= cameraRight;
             }
-            else if (Input.GetKey(KeyCode.RightArrow))
+            else if (Input.GetKey(KeyCode.D))
             {
                 m_Input_Movement += cameraRight;
             }
@@ -285,11 +285,10 @@ namespace Shooter.Gameplay
                 Input_FireHold = true;
             }
 
-            //if (Input.GetKey(KeyCode.X) || Input.GetMouseButton(0))
-            //{
-            //    Input_FireHold = true;
-
-            //}
+            if (Input.GetMouseButton(0))
+            {
+                Input_FireHold = true;
+            }
 
             //if (Input.GetMouseButton(1))
             //{
