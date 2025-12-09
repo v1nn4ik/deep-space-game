@@ -309,7 +309,7 @@ namespace Shooter.Gameplay
             //{
             //    Input_Grenade = true;
             //}
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 Input_Dash = true;
             }
