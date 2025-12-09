@@ -5,10 +5,18 @@ namespace Shooter.Gameplay
 {
     public class PWeapon_Pistol : Weapon_Base
     {
+
+        private AudioClip fireClip;
+        
+        private AudioSource fireAudioSource;
         // Start is called before the first frame update
         void Start()
         {
-
+            fireClip = Resources.Load<AudioClip>("Audio/light_blast_1");
+            fireAudioSource = gameObject.AddComponent<AudioSource>();
+            fireAudioSource.clip = fireClip;
+            fireAudioSource.playOnAwake = false;
+            fireAudioSource.volume = 0.1f;
         }
 
         // Update is called once per frame
@@ -86,6 +94,11 @@ namespace Shooter.Gameplay
             obj.transform.localPosition = Vector3.zero;
             obj.transform.forward = m_ParticlePoint.forward;
             Destroy(obj, 3);
+            
+            if (fireClip != null && fireAudioSource != null)
+            {
+                fireAudioSource.PlayOneShot(fireClip);
+            }
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Shooter.Gameplay
             //StateSystem stateSys = GetComponent<StateSystem>();
             //stateSys.StartState(-2);
             //StartCoroutine(Co_EnterLevel());
+            base.Start();
             m_FacePlayer = false;
         }
 
@@ -63,6 +64,9 @@ namespace Shooter.Gameplay
             obj = Instantiate(m_FireParticlePrefab1);
             obj.transform.position = m_FirePoint.position;
             Destroy(obj, 3);
+            
+            PlayShotSound();
+            
         }
 
         IEnumerator Co_AttackLoop()

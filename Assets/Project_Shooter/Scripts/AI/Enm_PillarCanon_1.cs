@@ -16,6 +16,7 @@ namespace Shooter.Gameplay
         // Start is called before the first frame update
         void Start()
         {
+            base.Start();
             StartCoroutine(Co_AttackLoop());
         }
 
@@ -75,6 +76,8 @@ namespace Shooter.Gameplay
                 obj.transform.forward = Quaternion.Euler(0, i * 45, 0) *Vector3.forward;
                 obj.GetComponent<ProjectileCollision>().m_Creator = gameObject;
                 Destroy(obj, 10);
+                PlayShotSound();
+                
             }
         }
     }

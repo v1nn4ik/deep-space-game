@@ -29,6 +29,10 @@ namespace Shooter.Gameplay
         public Transform m_FirePoint;
         public GameObject m_WeaponPowerParticle;
         public GameObject m_DeathParticle;
+        
+        //audio
+        [SerializeField] private AudioSource m_AudioSource;
+        private AudioClip m_AudioClip;
         //public WeaponControl m_MyWeaponControl;
 
         Vector3 m_MovementInput;
@@ -95,6 +99,25 @@ namespace Shooter.Gameplay
             //Cursor.lockState = CursorLockMode.Locked;
 
             LoadPurchasedItems();
+            
+            
+            // audio start
+
+            m_AudioClip = Resources.Load<AudioClip>("Audio/Footsteps_Sand_Jump_Land_03");
+            if (m_AudioClip == null)
+            {
+                Debug.LogError("Не найден клип");
+            }
+            else
+            {
+                m_AudioSource = gameObject.AddComponent<AudioSource>();
+                m_AudioSource.loop = true;
+                m_AudioSource.playOnAwake = false;
+                m_AudioSource.clip = m_AudioClip;
+                m_AudioSource.volume = 0.4f;
+            }
+            
+            
         }
 
         private void LoadPurchasedItems()
@@ -300,6 +323,9 @@ namespace Shooter.Gameplay
             float runSpeed = Mathf.Clamp(vSpeed.magnitude / 10f, 0, 1);
             m_Animator.SetFloat("RunSpeed", runSpeed);
 
+            UpdateFootsepSound(runSpeed);
+
+            //shield
             m_ShieldObject.transform.position = transform.position + new Vector3(0, 1, 0);
 
                 if (!m_IsDead)
@@ -313,6 +339,33 @@ namespace Shooter.Gameplay
                     Destroy(obj, 3);
                     gameObject.SetActive(false);
                 }
+            }
+        }
+
+        private void UpdateFootsepSound(float runSpeed)
+        {
+            if (m_AudioSource == null )
+            {
+                Debug.Log("Footsep sound null");
+                return;
+            }
+            
+            if (Time.timeScale == 0)
+            {
+                if (m_AudioSource.isPlaying)
+                    m_AudioSource.Stop();
+                return;
+            }
+
+            if (runSpeed > 0.1f)
+            {
+                if (!m_AudioSource.isPlaying)
+                    m_AudioSource.Play();
+            }
+            else
+            {
+                if (m_AudioSource.isPlaying)
+                    m_AudioSource.Stop();
             }
         }
 

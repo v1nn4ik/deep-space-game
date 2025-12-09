@@ -14,6 +14,7 @@ namespace Shooter.Gameplay
         // Start is called before the first frame update
         void Start()
         {
+            base.Start();
             StartCoroutine(Co_AttackLoop());
         }
 
@@ -50,6 +51,8 @@ namespace Shooter.Gameplay
             obj = Instantiate(m_FireParticlePrefab1);
             obj.transform.position = m_FirePoint.position;
             Destroy(obj, 3);
+            PlayShotSound();
+            
         }
     }
 }

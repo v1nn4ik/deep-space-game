@@ -38,12 +38,12 @@ namespace Shooter.ScriptableObjects
             PlayerPrefs.SetInt("m_CurrentWeaponNum", m_CurrentWeaponNum);
             PlayerPrefs.Save();
 
-            // Сохранение m_GemCount в облачное хранилище через PluginYG
-            YandexGame.savesData.m_GemCount = m_GemCount;
-            YandexGame.SaveProgress();
-
-            // Запись в лидерборд
-            YandexGame.NewLeaderboardScores("gemslb", m_GemCount); // Запись в лидерборд gemslb
+            // // Сохранение m_GemCount в облачное хранилище через PluginYG
+            // YandexGame.savesData.m_GemCount = m_GemCount;
+            // YandexGame.SaveProgress();
+            //
+            // // Запись в лидерборд
+            // YandexGame.NewLeaderboardScores("gemslb", m_GemCount); // Запись в лидерборд gemslb
         }
 
         public void Load()
