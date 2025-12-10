@@ -9,6 +9,12 @@ namespace Shooter.Gameplay
         public Color m_WeaponColor = new Color(1f, 0.2f, 0.2f, 1f); // Красный цвет
 
         private Renderer[] m_Renderers;
+        
+        
+        //audio
+        private AudioClip fireClip;
+        
+        private AudioSource fireAudioSource;
 
         // Start is called before the first frame update
         void Start()
@@ -16,6 +22,13 @@ namespace Shooter.Gameplay
             // Находим все Renderer компоненты в дочерних объектах
             m_Renderers = GetComponentsInChildren<Renderer>();
             ApplyColor();
+
+            fireClip = Resources.Load<AudioClip>("Audio/light_blast_5");
+            fireAudioSource = gameObject.AddComponent<AudioSource>();
+            fireAudioSource.clip = fireClip;
+            fireAudioSource.playOnAwake = false;
+            fireAudioSource.volume = 0.1f;
+            
         }
 
         private void ApplyColor()
@@ -110,6 +123,11 @@ namespace Shooter.Gameplay
             obj.transform.localPosition = Vector3.zero;
             obj.transform.forward = m_ParticlePoint.forward;
             Destroy(obj, 3);
+            
+            if (fireClip != null && fireAudioSource != null)
+            {
+                fireAudioSource.PlayOneShot(fireClip);
+            }
         }
     }
 }
