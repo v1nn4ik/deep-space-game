@@ -182,6 +182,8 @@ namespace Shooter.Gameplay
             obj.GetComponent<ProjectileMovement>().m_TurnSpeed = -00;
             Destroy(obj, 10);
 
+            PlayShotSound();
+
         }
 
         public void ShootRingBullet(int halfCount)

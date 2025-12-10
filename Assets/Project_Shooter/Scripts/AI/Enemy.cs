@@ -44,19 +44,31 @@ namespace Shooter.Gameplay
         public bool m_Alerted = false;
 
         public Animator m_Animator;
+        
+        
+        //audio
+        private AudioSource audioSource;
+        private AudioClip audioClip;
 
         public int m_ItemDropCount = 1;
         // Start is called before the first frame update
-        void Start()
+        protected void Start()
         {
-            m_CanDamage = true;
-            m_DamageControl = GetComponent<DamageControl>();
+            // m_CanDamage = true;
+            // m_DamageControl = GetComponent<DamageControl>();
+            //
+            // InitPosition = transform.position;
+            //
+            // GameObject obj = Instantiate(m_SpawnParticlePrefab);
+            // obj.transform.position = InitPosition;
+            // Destroy(obj, 3);
 
-            InitPosition = transform.position;
-
-            GameObject obj = Instantiate(m_SpawnParticlePrefab);
-            obj.transform.position = InitPosition;
-            Destroy(obj, 3);
+            audioClip = Resources.Load<AudioClip>("Audio/light_blast_5");
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.clip = audioClip;
+            audioSource.playOnAwake = false;
+            audioSource.volume = 0.3f;
+            
 
         }
 
@@ -149,6 +161,14 @@ namespace Shooter.Gameplay
         public virtual void EnableEnemy()
         {
 
+        }
+
+        protected void PlayShotSound()
+        {
+            if (audioSource != null && audioClip != null)
+            {
+                audioSource.PlayOneShot(audioClip);
+            }
         }
 
         void OnDrawGizmos()
