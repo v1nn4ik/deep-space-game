@@ -76,7 +76,18 @@ namespace Shooter.Gameplay
             yield return new WaitForSeconds(1);
             FadeControl.m_Current.StartFadeOut();
             yield return new WaitForSeconds(2);
-            SceneManager.LoadScene("EndScene");
+            SwitchScene();
+            // SceneManager.LoadScene("EndScene");
+        }
+
+        private void SwitchScene()
+        {
+            var currentScene = SceneManager.GetActiveScene().name;
+            Debug.Log($"{currentScene} - текущая сцена. Переход на новую");
+            if  (currentScene == "Level_1")
+                SceneManager.LoadScene("Level_2");
+            else if  (currentScene == "Level_2")
+                SceneManager.LoadScene("EndScene");
         }
     }
 }
